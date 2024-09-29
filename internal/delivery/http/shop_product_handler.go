@@ -7,17 +7,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator"
 	"github.com/sigit14ap/product-service/helpers"
+	"github.com/sigit14ap/product-service/internal/delivery/dto"
 	"github.com/sigit14ap/product-service/internal/domain"
 	"github.com/sigit14ap/product-service/internal/usecase"
 )
 
 type ProductHandler struct {
 	productUsecase usecase.ProductUsecase
-}
-
-type ProductRequest struct {
-	Name  string  `json:"name" validate:"required"`
-	Price float64 `json:"price" validate:"required,gt=0"`
 }
 
 var validate *validator.Validate
@@ -82,7 +78,7 @@ func (handler *ProductHandler) GetByIDAndShopID(context *gin.Context) {
 func (handler *ProductHandler) Create(context *gin.Context) {
 
 	validate = validator.New()
-	var productRequest ProductRequest
+	var productRequest dto.ProductRequest
 	err := context.BindJSON(&productRequest)
 	if err != nil {
 		helpers.ErrorResponse(context, http.StatusBadRequest, err.Error())
@@ -125,7 +121,7 @@ func (handler *ProductHandler) Create(context *gin.Context) {
 func (handler *ProductHandler) Update(context *gin.Context) {
 
 	validate = validator.New()
-	var productRequest ProductRequest
+	var productRequest dto.ProductRequest
 	err := context.BindJSON(&productRequest)
 	if err != nil {
 		helpers.ErrorResponse(context, http.StatusBadRequest, err.Error())

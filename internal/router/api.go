@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func NewRouter(productHandler *delivery.ProductHandler, shopClient *services.ShopClient) *gin.Engine {
+func NewRouter(productHandler *delivery.ProductHandler, userProductHandler *delivery.UserProductHandler, shopClient *services.ShopClient) *gin.Engine {
 	router := gin.New()
 	v1 := router.Group("/api/v1")
 	v1.Use(middleware.ServiceMiddleware())
@@ -21,6 +21,11 @@ func NewRouter(productHandler *delivery.ProductHandler, shopClient *services.Sho
 		shop.GET("/products/:id", productHandler.GetByIDAndShopID)
 		shop.PUT("/products/:id", productHandler.Update)
 		shop.DELETE("/products/:id", productHandler.Delete)
+	}
+
+	products := v1.Group("products")
+	{
+		products.GET("/", userProductHandler.GetAllProductsWithStock)
 	}
 
 	return router

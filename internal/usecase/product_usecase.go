@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"github.com/sigit14ap/product-service/internal/delivery/dto"
 	"github.com/sigit14ap/product-service/internal/domain"
 	repository "github.com/sigit14ap/product-service/internal/repository/mysql"
 )
@@ -11,6 +12,7 @@ type ProductUsecase interface {
 	Create(product *domain.Product) error
 	Update(product *domain.Product) error
 	Delete(id, shopID uint64) error
+	GetAllProductsWithStock() ([]dto.ProductResponse, error)
 }
 
 type productUsecase struct {
@@ -41,4 +43,8 @@ func (uc *productUsecase) Update(product *domain.Product) error {
 
 func (uc *productUsecase) Delete(id, shopID uint64) error {
 	return uc.productRepository.Delete(id, shopID)
+}
+
+func (uc *productUsecase) GetAllProductsWithStock() ([]dto.ProductResponse, error) {
+	return uc.productRepository.GetAllProductsWithStock()
 }

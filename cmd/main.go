@@ -49,8 +49,9 @@ func main() {
 	productRepo := repository.NewProductRepository(db)
 	productService := usecase.NewProductUsecase(productRepo)
 	productHandler := delivery.NewProductHandler(productService)
+	userProductHandler := delivery.NewUserProductHandler(productService)
 
-	router := router.NewRouter(productHandler, shopClient)
+	router := router.NewRouter(productHandler, userProductHandler, shopClient)
 
 	log.Info(router.Run(":" + os.Getenv("APP_PORT")))
 }
